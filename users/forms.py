@@ -11,7 +11,7 @@ class CustomUserCreationForm(UserCreationForm):
         model = CustomUser
         #fields = ('username', 'email', 'age',)
         
-        fields = UserCreationForm.Meta.fields + ('address','phone_number','is_staff','location',)
+        fields = UserCreationForm.Meta.fields + ('name', 'address','phone_number','is_staff','location',)
         widgets = {
            'location': OSMWidget(
                 attrs={
