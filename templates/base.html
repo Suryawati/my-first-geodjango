@@ -1,0 +1,33 @@
+
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+<!DOCTYPE html>
+<html>
+<head>
+
+   	{{ form.media }}	
+    <meta charset="utf-8">
+
+  	<title>{% block title %}MyMap App{% endblock title %}</title>
+
+</head>
+
+
+	<body>
+
+
+  		<main>
+    
+    		{% block content %}
+
+    		{% endblock content %}
+  		</main>
+    
+
+	</body>
+</html>
+
+

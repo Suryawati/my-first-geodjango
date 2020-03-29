@@ -1,0 +1,138 @@
+
+
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+{% block title %}Home{% endblock title %}
+
+
+  
+
+
+{% block content %}
+{% if user.is_authenticated %}
+  
+ <div>
+    <h1>Hi {{ user.username }}! </h1>
+</div>    
+     
+
+  <p><a href="{% url 'logout' %}">Log Out</a> | <a href="{% url 'edit_profile' %}">Edit Profile</a></p>
+
+    <ul>
+        
+        <li>
+            Username : {{ user.username }}  
+        </li>
+        <li>
+            Address : {{user.address}} 
+        </li>
+        <li>
+            Phone Number : {{user.phone_number}} 
+        </li>
+        <li>
+            lat : {{ user.location.y }} , lon : {{ user.location.x }}  
+            
+        </li>
+
+
+         {% leaflet_map "main" callback="map_init" %} 
+      <script type="text/javascript">
+             function map_init(map, options) {
+             
+             
+
+        // get point lat and lon
+         
+        var lon = "{{ user.location.x }}";
+        var lat = "{{ user.location.y }}";
+        
+        map.setView([lat, lon ], 12);
+        
+        mymarker = L.marker([lat, lon]).addTo(map);
+
+         }
+
+           
+      </script>  
+    </ul>
+    
+      
+
+{% else %}
+  <p>You are not logged in</p>
+  <a href="{% url 'login' %}">Log In</a> |
+  <a href="{% url 'signup' %}">Sign Up</a>
+   
+ <div>
+    {% leaflet_map "main" callback="map_init" %}
+</div>
+
+  <body>
+      
+      <script type="text/javascript">
+             function map_init(map, options) {
+             
+             map.setView([-7.0978583930017205, 113.18939208984374 ], 12);
+         
+
+        // get point lat and lon
+         {% if users %}
+             {% for us in users %}
+        var lon = "{{ us.location.x }}";
+        var lat = "{{ us.location.y }}";
+
+        // zoom to point & add it to map
+        //map.flyTo([lat, lon], 10);
+
+         mymarker = L.marker([lat, lon]).addTo(map);
+
+
+         var marker = L.marker([lat, lon],{title: "Title" }  ).addTo(map);
+         marker.bindPopup("{{us.username}}" + " " + "{{us.address}}");
+         marker.on('click', onClick);
+
+         function onClick(e) {
+         var popup = e.target.getPopup();
+         var content = popup.getContent();
+
+        console.log(content);
+    }
+
+           {% endfor %}
+
+
+
+        {% endif %}
+
+
+        
+
+    }
+</script>
+</body>
+  
+
+{% endif %}
+    
+   
+
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+     
+     
+
+    

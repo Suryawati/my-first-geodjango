@@ -1,0 +1,75 @@
+
+
+{% extends 'base.html' %}
+
+{% load leaflet_tags %}
+{% leaflet_css %}
+{% leaflet_js %}
+
+
+{% block title %}User Profile{% endblock title %}
+
+
+ 
+
+
+{% block content %}
+
+
+<div>
+    <h1> Profile {{ user.username }} </h1>
+</div>   
+
+    <ul>
+        
+        <li>
+            Username : {{ user.username }}  
+        </li>
+        <li>
+            Address : {{user.address}} 
+        </li>
+        <li>
+            Phone Number : {{user.phone_number}} 
+        </li>
+        <li>
+            lat : {{ user.location.y }} , lon : {{ user.location.x }}  
+            
+        </li>
+
+         {% leaflet_map "main" callback="map_init" %} 
+      <script type="text/javascript">
+             function map_init(map, options) {
+             
+             
+
+        // get point lat and lon
+         
+        var lon = "{{ user.location.x }}";
+        var lat = "{{ user.location.y }}";
+        
+        map.setView([lat, lon ], 12);
+        
+        mymarker = L.marker([lat, lon]).addTo(map);
+
+         }
+
+           
+      </script>  
+    </ul>
+    
+ <p><a href="{% url 'home' %}"> Back Home</a></p>     
+
+{% endblock content %}
+
+
+
+
+
+
+
+
+
+     
+     
+
+    
